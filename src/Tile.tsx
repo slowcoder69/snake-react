@@ -1,7 +1,7 @@
 interface Props {
-  isSnake?: boolean;
+  state: "snake" | "food" | "";
 }
 
-export function Tile({ isSnake }: Props = { isSnake: false }) {
-  return <div className={`tile ${isSnake ? "is-snake" : ""}`}></div>;
+export function Tile({ state }: Props = { state: "" }) {
+  return <div className={`tile ${state}`}></div>;
 }

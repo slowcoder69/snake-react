@@ -5,17 +5,20 @@ body {
     min-height: 100vh;
 }
 
+.row {
+    display: flex;
+}
+
+
 .tile {
     width: 20px;
     height: 20px;
     border: 1px solid black;
     margin: 2px;
 }
-
-.row {
-    display: flex;
-}
-
-.is-snake {
+.tile.snake {
     background: black;
+}
+.tile.food {
+    background: red;
 }
