@@ -33,5 +33,6 @@ export function useController(move: (dir: Dir) => void) {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, []);
+    // fix later (still rerun every interval)
+  }, [move]);
 }
