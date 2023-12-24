@@ -9,6 +9,10 @@ const ROWS = 20;
 
 const grid: number[][] = new Array(ROWS).fill(new Array(COLUMNS).fill(0));
 
+type GameState = "game-over" | "start" | "playing";
+
+const buttonStyle = "bg-black text-white min-w-20 py-1 px-4 text-sm";
+
 function randomTile(snake: Coor[]) {
   function rnd(n: number) {
     return Math.floor(Math.random() * n);
@@ -70,16 +74,16 @@ function App() {
   ]);
   const [food, setFood] = useState<Coor>({ x: 17, y: 15 });
   const [dir, setDir] = useState<Dir>("right");
-  const [gameOver, setGameOver] = useState(false);
+  const [gameState, setGameState] = useState<GameState>("start");
 
   function moveOneStep() {
-    if (gameOver) return;
+    if (gameState !== "playing") return;
 
     const newSnake = moveSnake(snake, dir);
     const newHead = newSnake[0];
 
     if (isGameOver(newSnake)) {
-      setGameOver(true);
+      setGameState("game-over");
       return;
     }
 
@@ -104,11 +108,34 @@ function App() {
     setDir(nextDir);
   }
 
+  function play() {
+    if (gameState === "game-over") {
+      setSnake([
+        { x: 13, y: 15 },
+        { x: 12, y: 15 },
+      ]);
+      setFood({ x: 17, y: 15 });
+      setDir("right");
+    }
+    setGameState("playing");
+  }
+
   return (
-    <div>
-      <div style={{ visibility: gameOver ? "visible" : "hidden" }}>
-        Game Over
-      </div>
+    <div className="relative p-1">
+      {gameState !== "playing" && (
+        <div className="absolute inset-0 grid place-items-center">
+          <div className="grid place-items-center w-60 h-60 bg-white border border-black">
+            <div className="text-center">
+              <div className="mb-2">
+                {gameState === "start" ? "Welcome to Snake" : "Game Over!"}
+              </div>
+              <button className={buttonStyle} onClick={play}>
+                Play {gameState === "game-over" ? "again" : ""}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div>
         {grid.map((row, y) => (
           <div className="row" key={y}>
@@ -135,5 +162,3 @@ function App() {
 }
 
 export default App;
-
-// i think this is good enough, just need to make the ui prettier
